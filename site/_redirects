@@ -1,4 +1,9 @@
 # Old WordPress URLs -> new site (301)
+/home/                     /                          301
+/home                      /                          301
+/index.php                 /                          301
+/feed/                     /blog/                     301
+/blog/feed/                /blog/                     301
 /case-studies/*            /work/:splat               301
 /case-studies              /work/                     301
 /blog/portfolio/*          /work/                     301
