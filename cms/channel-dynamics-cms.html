@@ -211,7 +211,7 @@
  },
  "navLogin": {
   "label": "Log in",
-  "href": "https://agency.eldingo.co.uk/"
+  "href": "/login/"
  },
  "footer": {
   "tagline": "AI, service design and research. The moment it makes sense.",
@@ -4126,6 +4126,14 @@
   "formError": "Sorry, that did not send. Please email us directly:",
   "formAccessKey": "38311cd4-89f5-497a-9b2c-5714f50b5c86"
  },
+ "login": {
+  "title": "Sign in to Eldingo Agency",
+  "text": "Our workspace for tenders, bids and our bench of associates, for the Eldingo team and invited associates.",
+  "button": "Sign in",
+  "href": "https://agency.eldingo.co.uk/",
+  "note": "You'll go to our secure sign-in page, run by Cloudflare. Choose Google if your email address is a Google account, or ask for a one-time code by email. There's no password to remember, and you'll stay signed in for a week. Need access? Ask your Eldingo contact to add you.",
+  "candidates": "Candidates and referees don't need to sign in here: just use the private link in the email we sent you."
+ },
  "terms": {
   "title": "Terms and conditions",
   "body": "Eldingo is a trading name of MyStoryboarder Ltd, registered in England and Wales, company number 15259560\n\n## 1. Website\n\nThe Website is owned and operated by MyStoryboarder Ltd (trading as Eldingo). By using and/or visiting the MyStoryboarder Ltd (trading as Eldingo) Website (the Website), you hereby agree to these terms and conditions. These terms apply to all users of the Website.\n\n## 2. Website Access\n\nMyStoryboarder Ltd (trading as Eldingo) hereby grants permission to use the Website provided that you do not copy any part of the Website in any medium without the prior written consent of MyStoryboarder Ltd (trading as Eldingo), that you do not alter or modify any part of the Website other than as may be reasonably necessary to use the Website for its intended purpose and that you comply fully with the terms and conditions of use of this Website.\n\n## 3. Third Party Websites\n\nThe Website may contain links to third party websites that are not owned or controlled by MyStoryboarder Ltd (trading as Eldingo). MyStoryboarder Ltd (trading as Eldingo) takes no responsibility for the content or privacy policies of any third party websites.\n\n## 4. Intellectual Property Rights\n\nThe content of the Website including the text, software, scripts, graphics, photos, sounds, music, videos and interactive features, and the trademarks, service marks and logos are owned by or licensed to MyStoryboarder Ltd (trading as Eldingo) or its clients. The content is subject to copyright and other intellectual property rights which belong exclusively to MyStoryboarder Ltd (trading as Eldingo) or its clients. The content of the Website may not be reproduced, distributed, transmitted, broadcast, displayed, sold, licensed or otherwise exploited for any other purposes whatsoever without the prior written consent of MyStoryboarder Ltd (trading as Eldingo). You hereby agree not to distribute any of the content of the Website other than as expressly permitted under these terms. You may download material from this site for personal use only. All materials provided are intended for informational purposes only and are subject to change to withdrawal by MyStoryboarder Ltd (trading as Eldingo) at any time without notice. MyStoryboarder Ltd (trading as Eldingo) reserves the right to discontinue any aspect of the Website at any time.\n\n## 5. Warranty Disclaimer\n\nYou agree that your use of the Website shall be at your sole risk. To the fullest extent permitted by law, MyStoryboarder Ltd (trading as Eldingo), its officers, directors, employees, and agents disclaim all warranties, express or implied, in connection with the Website and your use thereof. MyStoryboarder Ltd (trading as Eldingo) its officers, directors, employees, and agents make no warranties or representations about the accuracy or completeness of this Website’s content and assume no liability or responsibility for: any errors, mistakes, or inaccuracies of content; any interruption or cessation of transmission to or from the Website; any bugs, viruses, or the like which may be transmitted to or through the Website by any third party and/or any loss or damage of any kind incurred as a result of the use of any content posted, emailed, transmitted, or otherwise made available via the Website.\n\n## 6. Limitation of Liability\n\nNothing in these terms shall exclude or in any way limit MyStoryboarder Ltd (trading as Eldingo)’s liability for fraud, or for death or personal injury caused by its negligence, or any other liability to the extent such liability may not be excluded or limited as a matter of law. MyStoryboarder Ltd (trading as Eldingo) will not be liable for any loss of actual or anticipated income or profits, loss of contracts or for any special, indirect or consequential loss or damage of any kind howsoever arising and whether caused by tort (including negligence), breach of contract or otherwise, whether or not such loss or damage is foreseeable, foreseen or known. The Website is controlled and offered by MyStoryboarder Ltd (trading as Eldingo) in the United Kingdom. MyStoryboarder Ltd (trading as Eldingo) makes no representations and gives no warranties that the Website is appropriate or available for use in other locations. Those who access or use the Website from other jurisdictions do so at their own risk and are responsible for compliance with any local laws."
@@ -4748,6 +4756,10 @@ section{padding:96px 0}
 .nav .sub{display:none;position:absolute;top:100%;left:0;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;min-width:240px;box-shadow:0 18px 40px rgba(20,24,29,.12);list-style:none}
 .nav li:hover>.sub,.nav li:focus-within>.sub{display:block}
 .nav .sub a{font-weight:500;font-size:14px;padding:9px 12px}
+.login-sec{padding-top:0!important}
+.login-card{border:1px solid var(--line);border-radius:18px;padding:32px;background:#fff;box-shadow:0 18px 40px rgba(20,24,29,.06);max-width:620px}
+.login-note{color:#5B6782;font-size:15px;margin:18px 0 0}
+.login-sep{border-top:1px solid var(--line);padding-top:16px;margin-top:20px}
 .nav .login a{display:flex;align-items:center;gap:6px;color:var(--muted,#5B6782);font-weight:500;margin-left:6px}
 .nav .login a:hover{color:var(--brand)}
 .nav .cta a{background:var(--brand);color:#fff;border-radius:999px;padding:11px 20px;margin-left:8px}
@@ -5091,7 +5103,7 @@ ol.rank{list-style:none;display:grid;gap:14px;margin:0}
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
-<meta name="description" content="${attr(page.description || c.seo.defaultDescription)}">
+<meta name="description" content="${attr(page.description || c.seo.defaultDescription)}">${page.noindex?'\n<meta name="robots" content="noindex">':''}
 <link rel="canonical" href="${attr(url)}">
 <meta property="og:type" content="${page.type==='article'?'article':'website'}">
 <meta property="og:title" content="${attr(title)}">
@@ -5563,6 +5575,17 @@ function cdSend(f){if(!CDF.key){cdMail(f);return false;}if(f.botcheck&&f.botchec
     return {path:'/terms/', title:T.title, description:`Terms and conditions of use for the ${c.site.name} website.`, body};
   }
 
+  function loginPage(c){
+    const L=c.login||{};
+    const body=`${hero({title:L.title||'Sign in',text:L.text,eyebrow:'Team sign-in',compact:true,plain:true})}
+<section class="login-sec"><div class="wrap"><div class="login-card">
+  <a class="btn" href="${attr(L.href||'https://agency.eldingo.co.uk/')}" rel="nofollow">${esc(L.button||'Sign in')} <span aria-hidden="true">&rarr;</span></a>
+  ${L.note?`<p class="login-note">${esc(L.note)}</p>`:''}
+  ${L.candidates?`<p class="login-note login-sep">${esc(L.candidates)}</p>`:''}
+</div></div></section>`;
+    return {path:'/login/', title:L.title||'Sign in', description:`Team sign-in to ${c.site.name} Agency.`, body, noindex:true};
+  }
+
   function notFound(c){
     return {path:'/404.html', title:'Page not found', description:'Page not found', body:`${hero({title:'Page not found',text:'Sorry, we could not find that page. It may have moved when we rebuilt the site.',compact:true,plain:true,ctaLabel:'Go to the homepage',ctaHref:'/'})}<section><div class="wrap"><div class="section-head"><h2>Popular pages</h2></div><div class="grid-3">${c.work.caseStudies.slice(0,3).map(workCard).join('')}</div></div></section>`};
   }
@@ -5575,7 +5598,7 @@ function cdSend(f){if(!CDF.key){cdMail(f);return false;}if(f.botcheck&&f.botchec
     c.services.pages.forEach(s=>pages.push(servicePage(c,s)));
     pages.push(trainingPage(c), aboutPage(c), leadershipPage(c), resourcesPage(c), labPage(c), participantsTool(c), prioritiserTool(c), personaTool(c), blueprintTool(c), painMapTool(c), pressKitPage(c), quickCheckPage(c), blogIndex(c));
     c.blog.posts.forEach(p=>pages.push(postPage(c,p)));
-    pages.push(contactPage(c), termsPage(c), notFound(c));
+    pages.push(contactPage(c), termsPage(c), loginPage(c), notFound(c));
     return pages;
   }
   function buildPages(c){
@@ -5669,10 +5692,11 @@ const SCHEMAS = {
   resources: {title:'Resources', hint:'Free downloads. Put files in site/downloads/.', fields:[txt('eyebrow','Eyebrow'),txt('title','Title'),area('intro','Intro'),list('items','Downloads',[txt('title','Title'),area('text','Text'),img('image','Preview image'),txt('file','File path (e.g. /downloads/x.pdf)'),txt('label','Button label')],'title'),txt('ctaHeading','CTA heading'),area('ctaText','CTA text')]},
   blog: {title:'Blog', hint:'Posts use simple markdown: ## heading, - bullets, ![alt](/images/x.jpg), > quote.', fields:[txt('eyebrow','Eyebrow'),txt('title','Title'),area('intro','Intro'),img('heroImage','Hero image'),txt('ctaHeading','CTA heading'),area('ctaText','CTA text'),list('posts','Posts',[txt('slug','Slug (URL)'),txt('title','Title'),txt('date','Date (YYYY-MM-DD)'),txt('author','Author'),img('hero','Hero image'),area('excerpt','Excerpt'),{key:'body',label:'Body (markdown)',type:'textarea',tall:true}],'title')]},
   contact: {title:'Contact', hint:'Email, phone and address come from Site settings.', fields:[txt('eyebrow','Eyebrow'),txt('title','Title'),area('intro','Intro'),txt('detailsHeading','Details heading'),txt('hours','Office hours'),area('note','Note'),img('image','Image'),txt('formHeading','Form heading'),txt('formButton','Form button'),txt('formSubject','Email subject'),area('formNote','Form note (shown when no access key)'),txt('formAccessKey','Web3Forms access key','Create a free key at web3forms.com for the site email; messages are delivered to that inbox. Leave blank and the form opens an email instead.'),area('formNoteLive','Form note (when the form sends)'),area('formThanks','Thank-you message'),area('formError','Error message'),txt('linkedin','LinkedIn URL (optional override)')]},
-  terms: {title:'Terms', hint:'/terms/ — markdown.', fields:[txt('title','Title'),{key:'body',label:'Body (markdown)',type:'textarea',tall:true}]}
+  terms: {title:'Terms', hint:'/terms/ — markdown.', fields:[txt('title','Title'),{key:'body',label:'Body (markdown)',type:'textarea',tall:true}]},
+  login: {title:'Log in page', hint:'/login/ — team sign-in to Eldingo Agency (not in search results).', fields:[txt('title','Title'),txt('text','Intro'),txt('button','Button label'),txt('href','Button link'),{key:'note',label:'How sign-in works',type:'textarea'},{key:'candidates',label:'Note for candidates and referees',type:'textarea'}]}
 };
 const SIDEBAR=[['Site',['site','theme','nav','footer','seo','clients']],['Pages',['home','work','services','training','about','leadership','lab','tools','presskit','quickcheck','resources','blog','contact','terms']]];
-const PREVIEW_FOR={home:'/',work:'/work/',services:'/services/',leadership:'/about/leadership/',lab:'/lab/',tools:'/tools/ai-use-case-prioritiser/',presskit:'/press-kit/',quickcheck:'/ai-readiness-check/',training:'/training/',about:'/about/',resources:'/resources/',blog:'/blog/',contact:'/contact/',terms:'/terms/'};
+const PREVIEW_FOR={home:'/',work:'/work/',services:'/services/',leadership:'/about/leadership/',lab:'/lab/',tools:'/tools/ai-use-case-prioritiser/',presskit:'/press-kit/',quickcheck:'/ai-readiness-check/',training:'/training/',about:'/about/',resources:'/resources/',blog:'/blog/',contact:'/contact/',terms:'/terms/',login:'/login/'};
 
 function renderSidebar(){
   $('sidebar').innerHTML = SIDEBAR.map(([g,items])=>`<div class="side-group">${g}</div>`+items.map(k=>`<button class="side-item${k===activeSection?' active':''}" onclick="selectSection('${k}')">${SCHEMAS[k].title}</button>`).join('')).join('');

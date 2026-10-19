@@ -45,7 +45,7 @@ for (const [file, out] of Object.entries(pages)) {
 // sitemap
 const base = content.site.url.replace(/\/$/, '');
 const today = new Date().toISOString().slice(0, 10);
-const urls = paths.filter(f => f !== '404.html').map(f => '/' + f.replace(/index\.html$/, ''));
+const urls = paths.filter(f => f !== '404.html' && f !== 'login/index.html').map(f => '/' + f.replace(/index\.html$/, ''));
 const sm = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
   urls.map(u => `  <url><loc>${base}${u}</loc><lastmod>${today}</lastmod><changefreq>${u === '/' ? 'weekly' : 'monthly'}</changefreq><priority>${u === '/' ? '1.0' : u.split('/').length > 3 ? '0.6' : '0.8'}</priority></url>`).join('\n') +
   `\n</urlset>\n`;
