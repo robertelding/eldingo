@@ -209,6 +209,10 @@
   "label": "Book a call",
   "href": "/contact/"
  },
+ "navLogin": {
+  "label": "Log in",
+  "href": "https://agency.eldingo.co.uk/"
+ },
  "footer": {
   "tagline": "AI, service design and research. The moment it makes sense.",
   "servicesHeading": "Services",
@@ -4744,6 +4748,8 @@ section{padding:96px 0}
 .nav .sub{display:none;position:absolute;top:100%;left:0;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;min-width:240px;box-shadow:0 18px 40px rgba(20,24,29,.12);list-style:none}
 .nav li:hover>.sub,.nav li:focus-within>.sub{display:block}
 .nav .sub a{font-weight:500;font-size:14px;padding:9px 12px}
+.nav .login a{display:flex;align-items:center;gap:6px;color:var(--muted,#5B6782);font-weight:500;margin-left:6px}
+.nav .login a:hover{color:var(--brand)}
 .nav .cta a{background:var(--brand);color:#fff;border-radius:999px;padding:11px 20px;margin-left:8px}
 .nav .cta a:hover{background:var(--accent);color:var(--brand)}
 .burger{display:none;background:none;border:1px solid var(--line);border-radius:8px;width:44px;height:44px;cursor:pointer;align-items:center;justify-content:center}
@@ -5073,7 +5079,9 @@ ol.rank{list-style:none;display:grid;gap:14px;margin:0}
       const active = page.path===n.href || (n.href!=='/' && page.path.startsWith(n.href)) ? ' class="active"' : '';
       const sub = (n.children&&n.children.length) ? `<ul class="sub">${n.children.map(ch=>`<li><a href="${attr(ch.href)}">${esc(ch.label)}</a></li>`).join('')}</ul>` : '';
       return `<li><a href="${attr(n.href)}"${active}>${esc(n.label)}</a>${sub}</li>`;
-    }).join('') + (c.navCta&&c.navCta.label ? `<li class="cta"><a href="${attr(c.navCta.href)}">${esc(c.navCta.label)}</a></li>` : '');
+    }).join('')
+      + (c.navLogin&&c.navLogin.label ? `<li class="login"><a href="${attr(c.navLogin.href)}" rel="nofollow"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>${esc(c.navLogin.label)}</a></li>` : '')
+      + (c.navCta&&c.navCta.label ? `<li class="cta"><a href="${attr(c.navCta.href)}">${esc(c.navCta.label)}</a></li>` : '');
     const F=c.footer;
     const ogImg = page.image || S.ogImage;
     const ld = page.jsonld ? `<script type="application/ld+json">${JSON.stringify(page.jsonld).replace(/<\//g,'<\\/')}<\/script>` : '';
@@ -5705,6 +5713,7 @@ function renderEditor(){
   if(activeSection==='nav'){
     html+=fieldHTML({key:'nav',label:'Menu items',type:'list',of:[txt('label','Label'),txt('href','Link'),list('children','Dropdown items',link,'label')],titleKey:'label'},['nav']);
     html+=fieldHTML({key:'navCta',label:'Menu button',type:'object',fields:[txt('label','Label'),txt('href','Link')]},['navCta']);
+    html+=fieldHTML({key:'navLogin',label:'Log in link (team sign-in to Eldingo Agency)',type:'object',fields:[txt('label','Label'),txt('href','Link')]},['navLogin']);
   } else if(activeSection==='clients'){
     html+=fieldHTML({key:'clients',label:'Clients',type:'list',of:[txt('name','Name'),img('image','Logo'),txt('size','Size (blank, lg or sm)')],titleKey:'name'},['clients']);
   } else {
