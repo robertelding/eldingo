@@ -23,6 +23,20 @@ const pages = win.CD.buildPages(content);
 const paths = Object.keys(pages);
 if (paths.length < 10) { console.error('Build FAILED: too few pages'); process.exit(1); }
 
+// Remember the previous build, so the sitemap only moves a page's <lastmod> when its HTML changed.
+// (Google stops trusting lastmod if every page claims to change on every build.)
+const prevLastmod = new Map(); // url path -> date
+try {
+  const old = fs.readFileSync(path.join(SITE, 'sitemap.xml'), 'utf8');
+  for (const m of old.matchAll(/<loc>([^<]+)<\/loc><lastmod>([^<]+)<\/lastmod>/g)) {
+    prevLastmod.set(new URL(m[1]).pathname, m[2]);
+  }
+} catch { /* first build: no sitemap yet */ }
+const prevHtml = new Map(); // file -> previous output
+for (const file of paths) {
+  try { prevHtml.set(file, fs.readFileSync(path.join(SITE, file), 'utf8')); } catch { /* new page */ }
+}
+
 // remove previously generated html (keep images, downloads, static files)
 function clean(dir) {
   for (const f of fs.readdirSync(dir)) {
@@ -45,9 +59,17 @@ for (const [file, out] of Object.entries(pages)) {
 // sitemap
 const base = content.site.url.replace(/\/$/, '');
 const today = new Date().toISOString().slice(0, 10);
-const urls = paths.filter(f => f !== '404.html' && f !== 'login/index.html').map(f => '/' + f.replace(/index\.html$/, ''));
+const files = paths.filter(f => f !== '404.html' && f !== 'login/index.html');
+const urlOf = f => '/' + f.replace(/index\.html$/, '');
+let changed = 0;
+const lastmod = new Map(files.map(f => {
+  const keep = prevHtml.get(f) === pages[f] && prevLastmod.get(urlOf(f));
+  if (!keep) changed++;
+  return [urlOf(f), keep || today];
+}));
+const urls = files.map(urlOf);
 const sm = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-  urls.map(u => `  <url><loc>${base}${u}</loc><lastmod>${today}</lastmod><changefreq>${u === '/' ? 'weekly' : 'monthly'}</changefreq><priority>${u === '/' ? '1.0' : u.split('/').length > 3 ? '0.6' : '0.8'}</priority></url>`).join('\n') +
+  urls.map(u => `  <url><loc>${base}${u}</loc><lastmod>${lastmod.get(u)}</lastmod><changefreq>${u === '/' ? 'weekly' : 'monthly'}</changefreq><priority>${u === '/' ? '1.0' : u.split('/').length > 3 ? '0.6' : '0.8'}</priority></url>`).join('\n') +
   `\n</urlset>\n`;
 fs.writeFileSync(path.join(SITE, 'sitemap.xml'), sm);
 
@@ -61,7 +83,7 @@ for (const out of Object.values(pages)) {
     if (!fs.existsSync(path.join(SITE, decodeURIComponent(m[1])))) missing.add(m[1]);
   }
 }
-console.log(`Built ${paths.length} pages (${Math.round(bytes / 1024)} KB) into site/`);
+console.log(`Built ${paths.length} pages (${Math.round(bytes / 1024)} KB) into site/; ${changed} sitemap date(s) set to ${today}`);
 if (missing.size) { console.warn('WARNING: referenced files missing from site/:'); for (const m of missing) console.warn('  ' + m); }
 
 win.close();

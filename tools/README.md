@@ -9,6 +9,9 @@ from the **default content** inside `cms/channel-dynamics-cms.html`.
 
 Setup once: `cd tools && npm install` (installs jsdom).
 
+The sitemap's `<lastmod>` for a page only changes when that page's HTML changes; unchanged pages keep the date from the
+previous `site/sitemap.xml`. So always build on top of the committed `site/` folder, and commit `sitemap.xml` with the pages.
+
 ## Two ways to change content
 
 **A. In the Site Manager (no code)**
